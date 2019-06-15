@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    </head>
+    <body>
+            <h2 >You just typed <span id="user-input"><strong>...Nothing.</strong></span></h2>
+            <H1><div id="answer"></div></H1>
+        
+        <script type="text/javascript">
+            //Create Variable that stores Names to be used in Hangman
+            var hangmanNames = ["Nelson Mandela","Rosa Parks", "Muhammad Ali", "Toni Morrison", "Barack Obama"]
+
+            //Randomly selects 'Name' to be used in current game.
+            var currentName = hangmanNames[Math.floor(Math.random() * hangmanNames.length)];
+            console.log(currentName);
+            //---------------------------------------------------
+            var userInput = document.getElementById("user-input");
+
+            function check(i) {
+                var code = currentName.includes(i);
+                if (code === true) {
+                    console.log ("you got one!");
+                    
+                }
+            }
+
+            document.onkeyup = function(event) {
+                userInput.textContent = event.key;
+                var n = event.key;
+                console.log(event.key);
+                console.log(n);
+                check(n);
+            }
+            //---------------------------------------------------
+        //    currentName.forEach.charAt(function (element);
+            console.log(currentName.length);
+           for (i = 0; i < currentName.length; i++) {
+            var newDiv = document.createElement("div");
+                answer.appendChild(newDiv);
+                document.getElementById("answer").className = "bg-dark text-primary hidden";
+                newDiv.innerHTML = currentName.charAt(i);
+                // newDiv.textContent = currentName.charAt(i);
+                // newDiv.insertAdjacentHTML("beforeend", "</style>")
+                // newDiv.innerHTML = "<style = border: solid 2px red>";
+                
+                     
+                
+                
+                console.log(currentName.charAt(i));
+                            
+           }
+           
+        </script>
+    </body>
+</html>
