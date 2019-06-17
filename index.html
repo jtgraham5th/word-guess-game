@@ -20,6 +20,7 @@
             <hr>
             <H2><p id="usedletters" style="display:inline-flex; float: left;"></p></H2>
             <p id="show-letters"></p>
+            <button onclick="reset()">Start a New Game</button>
             <!-- <p id="wins-text"></p>
             <p id="losses-text"></p>
             <p id="ties-text"></p> -->
@@ -27,10 +28,12 @@
         <script type="text/javascript">
         
          var userInput = document.getElementById("user-input");
-         var hangmanNames = ["Nelson Mandela","Rosa Parks", "Muhammad Ali", "Toni Morrison", "Barack Obama"];
+         var hangmanNames = ["nelson mandela","rosa parks", "muhammad ali", "toni Morrison", "barack obama"];
          var currentName = hangmanNames[Math.floor(Math.random() * hangmanNames.length)];
+         console.log(currentName);
          var letterHolder = [];
          var answerCheck = [];
+         var alreadySelected = [];
          var currentScore = 0;
          var incorrectLetters = [];
          var rightwrong = Boolean;
@@ -39,14 +42,14 @@
             document.onkeyup = function(event) {
                 userInput.textContent = event.key;
                 var lettercheck = event.key;
-                console.log(lettercheck);
+                console.log("already chosen: " + alreadySelected);
+                console.log("lettercheck: " + lettercheck);
+                console.log("--------");
                 checking();
+                alreadySelected.push(event.key);
             } 
         
-            assignment();
-            // console.log(letterHolder)
-            // console.log("--------")
-            
+            assignment();            
             showLetters();
 
             //Create Variable that stores Names to be used in Hangman
@@ -62,51 +65,57 @@
             function assignment() {
                 for (i = 0; i < currentName.length; i++) {
                     letterHolder.push(currentName.charAt(i));
+                    
                 }
             };
             //Check or Match userInput or keypress to items in letterHolder array
             function checking() {
                 var lettercheck = event.key;
                 var rightwrong = letterHolder.includes(lettercheck);
-                console.log ("rightwrong:" + rightwrong)
-                for (var i = 0; i < currentName.length; i++) {
-                    if (lettercheck == currentName.charAt(i)) {
-                        console.log ("you got one!")
-                        answerCheck.push(i);
-                        console.log (answerCheck);
-                        console.log (lettercheck);
-                        // document.getElementById("letter" + i).classList.remove('bg-dark')
-                        document.getElementById("letter" + i).className = "d-block text-danger bg-light"
-                        currentScore++;
-                        console.log ("currentScore: " + currentScore);
-                        console.log ("Name Length: " + currentName.length);
-                        if (currentScore === (currentName.length - 1)) {
-                            alert ("You Win");
-                            document.getElementById("media").src = "https://www.youtube.com/embed/1-IgxSn21jU?autoplay=1";
-                            document.getElementById("media").setAttribute = ("allow", "autoplay");
+                
+                if (alreadySelected.includes(lettercheck) === false) {
+                    console.log ("rightwrong:" + rightwrong)
+                    for (var i = 0; i < currentName.length; i++) {
+                        if (lettercheck == currentName.charAt(i)) {
+                            console.log ("you got one!")
+                            answerCheck.push(i);
+                            console.log (answerCheck);
+                            // document.getElementById("letter" + i).classList.remove('bg-dark')
+                            var correctDiv = document.getElementById("letter" + i);
+                            correctDiv.style.visibility = "visible";
+                            document.getElementById("letter" + i).className = "d-block text-danger bg-light"
+                            currentScore++;
+                            console.log ("currentScore: " + currentScore);
+                            console.log ("Name Length: " + (currentName.length - 1));
+                            if (currentScore === (currentName.length - 1)) {
+                                alert ("You Win");
+                                document.getElementById("media").src = "https://www.youtube.com/embed/1-IgxSn21jU?autoplay=1";
+                                // document.getElementById("media").setAttribute = ("allow", "autoplay");
+                            }
                         }
                     }
-                }
-                if (rightwrong === false) {
-                        var logLetter = (lettercheck);
-                        var loseDiv = document.createElement("div");
-                        incorrectLetters.push(logLetter);
-                        usedletters.appendChild(loseDiv);
-                        document.getElementById("usedletters").className = "text-important bg-blue";
-                        loseDiv.textContent = lettercheck;                        
-                        hangman++;
-                        document.getElementById("media").src = "assets/images/hm" + hangman + ".jpg"; 
-                        if ( hangman >= 7) {
-                            alert("You Lose!")
-                        }
-                }
-                
-                
-                
-                
-                
-                
-            };
+                    if (rightwrong === false) {
+                            var logLetter = (lettercheck);
+                            var loseDiv = document.createElement("div");
+                            incorrectLetters.push(logLetter);
+                            usedletters.appendChild(loseDiv);
+                            document.getElementById("usedletters").className = "text-important bg-blue";
+                            loseDiv.textContent = lettercheck;                        
+                            hangman++;
+                            document.getElementById("media").src = "assets/images/hm" + hangman + ".jpg"; 
+                            if ( hangman >= 7) {
+                                alert("You Lose!")
+                            }
+                    }
+                } else {
+                    alert("Youv'e already selected that letter");
+                }    
+                    
+                    
+                    
+                    
+                    
+                };
             // function repeatLetters () {
             //     for (i = 0; i < currentName.length; i++) {
             //         if (lettercheck = )            }
@@ -115,9 +124,14 @@
                 for (i = 0; i < currentName.length; i++) {
                     var newDiv = document.createElement("div");
                     answer.appendChild(newDiv);
-                    document.getElementById("answer").className = "bg-dark";
+                    // document.getElementById("answer").className = "bg-dark";
+                    if (currentName.charAt(i) === " ") {
+                    newDiv.textContent = "_";
+                    } else {
                     newDiv.textContent = currentName.charAt(i);
+                    }
                     newDiv.id = "letter" + i;
+                    newDiv.style.visibility = "hidden";
                 }
             };
             function letterLog() {
@@ -127,7 +141,24 @@
                 if (document.getElementById("letter" + i).textContent = "bg-dark") {
                     alert ("You Win");
                 }
-            }
+            };
+            function reset() {
+                currentName = hangmanNames[Math.floor(Math.random() * hangmanNames.length)];
+                letterHolder = [];
+                answerCheck = [];
+                alreadySelected = [];
+                currentScore = 0;
+                incorrectLetters = [];
+                rightwrong = Boolean;
+                hangman = 0;
+                newDiv = document.getElementById("answer");
+                while (newDiv.hasChildNodes()) {
+                    newDiv.removeChild(newDiv.firstChild);
+                }
+                document.getElementById("media").src = "";
+                assignment();            
+                showLetters();
+            };
             //Display used letters already used 
             // keep track of letters used 
             //[]
