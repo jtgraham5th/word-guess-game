@@ -15,7 +15,8 @@
             <h2 >You just typed <span id="user-input"><strong>...Nothing.</strong></span></h2>
             <H1><div id="answer" style="display:inline-flex; float: left;"></div></H1>
             <p id="correct-letters"></p>
-            <p id="used-letters"></p>
+            <hr>
+            <H2><p id="usedletters" style="display:inline-flex; float: left;"></p></H2>
             <p id="show-letters"></p>
             <!-- <p id="wins-text"></p>
             <p id="losses-text"></p>
@@ -27,8 +28,10 @@
          var hangmanNames = ["Nelson Mandela","Rosa Parks", "Muhammad Ali", "Toni Morrison", "Barack Obama"];
          var currentName = hangmanNames[Math.floor(Math.random() * hangmanNames.length)];
          var letterHolder = [];
-         var answerCheck = []
+         var answerCheck = [];
          var currentScore = 0;
+         var incorrectLetters = [];
+         var rightwrong = Boolean;
 
             document.onkeyup = function(event) {
                 userInput.textContent = event.key;
@@ -61,6 +64,8 @@
             //Check or Match userInput or keypress to items in letterHolder array
             function checking() {
                 var lettercheck = event.key;
+                var rightwrong = letterHolder.includes(lettercheck);
+                console.log ("rightwrong:" + rightwrong)
                 for (var i = 0; i < currentName.length; i++) {
                     if (lettercheck == currentName.charAt(i)) {
                         console.log ("you got one!")
@@ -74,11 +79,27 @@
                         console.log ("Name Length: " + currentName.length);
                         if (currentScore === (currentName.length - 1)) {
                             alert ("You Win");
-                        };
-                        
+                        }
                     }
                 }
+                if (rightwrong === false) {
+                        var logLetter = (lettercheck);
+                        var loseDiv = document.createElement("div");
+                        incorrectLetters.push(logLetter);
+                        usedletters.appendChild(loseDiv);
+                        document.getElementById("usedletters").className = "text-important bg-blue";
+                        loseDiv.textContent = lettercheck
+                }
+                
+                
+                
+                
+                
+                
             };
+            // function repeatLetters () {
+            //     for (i = 0; i < currentName.length; i++) {
+            //         if (lettercheck = )            }
             //compare the numbers in the answer array with the position of the numbers in the letterholder array
             function showLetters() {
                 for (i = 0; i < currentName.length; i++) {
@@ -88,10 +109,12 @@
                     newDiv.textContent = currentName.charAt(i);
                     newDiv.id = "letter" + i;
                 }
-            }
-
+            };
+            function letterLog() {
+                    
+            };
             function scorePoint() {
-                if (currentScore == currentName) {
+                if (document.getElementById("letter" + i).textContent = "bg-dark") {
                     alert ("You Win");
                 }
             }
