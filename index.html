@@ -13,8 +13,10 @@
     </head>
     <body>
             <h2 >You just typed <span id="user-input"><strong>...Nothing.</strong></span></h2>
+            <hr>
             <H1><div id="answer" style="display:inline-flex; float: left;"></div></H1>
-            <p id="correct-letters"></p>
+            <hr>
+            <iframe src="" id="media" frameborder ="0" width="500" height="400" allow="autoplay"></iframe>
             <hr>
             <H2><p id="usedletters" style="display:inline-flex; float: left;"></p></H2>
             <p id="show-letters"></p>
@@ -32,6 +34,7 @@
          var currentScore = 0;
          var incorrectLetters = [];
          var rightwrong = Boolean;
+         var hangman = 0;
 
             document.onkeyup = function(event) {
                 userInput.textContent = event.key;
@@ -79,6 +82,8 @@
                         console.log ("Name Length: " + currentName.length);
                         if (currentScore === (currentName.length - 1)) {
                             alert ("You Win");
+                            document.getElementById("media").src = "https://www.youtube.com/embed/1-IgxSn21jU?autoplay=1";
+                            document.getElementById("media").setAttribute = ("allow", "autoplay");
                         }
                     }
                 }
@@ -88,7 +93,12 @@
                         incorrectLetters.push(logLetter);
                         usedletters.appendChild(loseDiv);
                         document.getElementById("usedletters").className = "text-important bg-blue";
-                        loseDiv.textContent = lettercheck
+                        loseDiv.textContent = lettercheck;                        
+                        hangman++;
+                        document.getElementById("media").src = "assets/images/hm" + hangman + ".jpg"; 
+                        if ( hangman >= 7) {
+                            alert("You Lose!")
+                        }
                 }
                 
                 
