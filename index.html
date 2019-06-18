@@ -2,183 +2,214 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <style>
-            #media {
-                -webkit-filter: blur(70px); 
-                filter: blur(70px);
-            } 
-        </style>
-    </head>
-    <body>
-            <h2 >You just typed <span id="user-input"><strong>...Nothing.</strong></span></h2>
-            <hr>
-            <H1><div id="answer" style="display:inline-flex; float: left;"></div></H1>
-            <hr>
-            <iframe src="" id="media" frameborder ="0" width="500" height="400" allow="autoplay"></iframe>
-            <p id="guesses-left"></p>
-            <hr>
-            <H2><p id="usedletters" style="display:inline-flex; float: left;"></p></H2>
-            <p id="show-letters"></p>
-            <button onclick="reset()">Start a New Game</button>
-            <p id="wins-text"></p>
-            
-            <p id="ties-text"></p>
-        
-        <script type="text/javascript">
-        
-         var userInput = document.getElementById("user-input");
-         var hangmanNames = ["oprah winfrey","rosa parks", "muhammad ali", "barack obama", "jackie robinson", "martin luther king Jr", "harriet tubman", "maya angelou", "mae c jemison"];
-         var currentName = hangmanNames[Math.floor(Math.random() * hangmanNames.length)];
-         console.log(currentName);
-         var letterHolder = [];
-         var answerCheck = [];
-         var alreadySelected = [];
-         var currentScore = 0;
-         var incorrectLetters = [];
-         var rightwrong = Boolean;
-         var hangman = 7;
-         var wins = 0;
-         document.getElementById("media").src = "assets/images/" + currentName + ".jpg";
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
 
-            document.onkeyup = function(event) {
-                userInput.textContent = event.key;
-                var lettercheck = event.key;
-                console.log("already chosen: " + alreadySelected);
-                console.log("lettercheck: " + lettercheck);
-                console.log("--------");
-                checking();
-                alreadySelected.push(event.key);
-            } 
-        
-        assignment();            
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        #media {
+            -webkit-filter: blur(70px);
+            filter: blur(70px);
+        }
+    </style>
+</head>
+
+<body class="bg-dark text-light">
+    <div class= "jumbotron text-dark">
+        <h1>Black History Word Guess</h1>
+        <p>Test your knowledge of Black History, Input the correct letters. Input the wrong answer and the picture will
+            become clearer to give you a hint. Can you figure out all 10? Good Luck!
+        </p>
+    </div>
+    <div class= "container">
+        <div class = "row d-flex align-items-center h-100">
+            <div class = "col-sm border h-100">
+                <h3>Wins:</h3>
+                <p id="wins-text"></p>
+            </div>
+            <div class = "col-sm border h-100">
+                <h3>Guesses Left:</h3>
+                <p id="guesses-left"></p>
+            </div>
+            <div class = "col-sm border h-100">
+                <h3>You just typed <span id="user-input"><strong>...Nothing.</strong></span></h3>
+            </div>
+            <div class = "col-sm border h-100">
+                <button onclick="reset()">Start a New Game</button>
+            </div>
+        </div>
+        <div class = "row border">
+            <div id="answer" style="font-size:36px; display:inline-flex; float: left;" class = "mx-auto"></div>
+        </div>
+        <div class = "row">
+            <div class = "col-sm border mx-auto" style = "height:400px; width:500px">
+                <img src="" id="media" style= "width:100%"/>
+            </div>
+            <div class = "col-sm border mx-auto"  style = "height:400px; width:500px"">
+                <iframe src="" id="video" frameborder="0" width="400" height="400" allow="autoplay"></iframe>
+            </div>
+        </div>
+        <div class = "row border">
+            <h2><p id="usedletters" style="display:inline-flex; float: left;"></p></h2>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+        var userInput = document.getElementById("user-input");
+        var hangmanNames = ["oprah winfrey", "rosa parks", "muhammad ali", "barack obama", "jackie robinson", "martin luther king Jr", "harriet tubman", "maya angelou", "mae c jemison"];
+        var currentName = hangmanNames[Math.floor(Math.random() * hangmanNames.length)];
+        console.log(currentName);
+        var letterHolder = [];
+        var answerCheck = [];
+        var alreadySelected = [];
+        var currentScore = 0;
+        var incorrectLetters = [];
+        var rightwrong = Boolean;
+        var hangman = 7;
+        var wins = 0;
+        document.getElementById("media").src = "assets/images/" + currentName + ".jpg";
+
+        document.onkeyup = function (event) {
+            userInput.textContent = event.key;
+            var lettercheck = event.key;
+            console.log("already chosen: " + alreadySelected);
+            console.log("lettercheck: " + lettercheck);
+            console.log("--------");
+            checking();
+            alreadySelected.push(event.key);
+        }
+
+        assignment();
         showLetters();
 
-            //Create Variable that stores Names to be used in Hangman
-            
+        //Create Variable that stores Names to be used in Hangman
 
-            //Randomly selects 'Name' to be used in current game.
-           
-            // console.log(currentName);
-            //---------------------------------------------------
-            // var userInput = document.getElementById("user-input")
 
-            //ASSIGNS EACH LETTER IN 'CURRENTNAME' AS AN ITEM IN 'LETTERHOLDER' ARRAY
-            function assignment() {
-                for (i = 0; i < currentName.length; i++) {
-                    letterHolder.push(currentName.charAt(i));  
-                }
-            };
-            //Check or Match userInput or keypress to items in letterHolder array
-            function checking() {
-                var lettercheck = event.key;
-                var rightwrong = letterHolder.includes(lettercheck);
-                
-                if (alreadySelected.includes(lettercheck) === false) {
-                    console.log ("rightwrong:" + rightwrong)
-                    for (var i = 0; i < currentName.length; i++) {
-                        if (lettercheck == currentName.charAt(i)) {
-                            console.log ("you got one!");
-                            answerCheck.push(i);
-                            console.log (answerCheck);
-                            // document.getElementById("letter" + i).classList.remove('bg-dark')
-                            var correctDiv = document.getElementById("letter" + i);
-                            correctDiv.style.visibility = "visible";
-                            document.getElementById("letter" + i).className = "d-block text-danger bg-light"
-                            currentScore++;
-                            console.log ("currentScore: " + currentScore);
-                            console.log ("Name Length: " + (currentName.length - 1));
-                            if (currentScore === (currentName.length - 1)) {
-                                alert ("You Win");
-                                document.getElementById("media").setAttribute("style","-webkit-filter:blur(" + 0 + "px)");
-                                wins++;
-                                document.getElementById("media").src = "https://www.youtube.com/embed/1-IgxSn21jU?autoplay=1";
-                                document.getElementById("wins-text").textContent = "Wins: " + wins;
-                            }
+        //Randomly selects 'Name' to be used in current game.
+
+        // console.log(currentName);
+        //---------------------------------------------------
+        // var userInput = document.getElementById("user-input")
+
+        //ASSIGNS EACH LETTER IN 'CURRENTNAME' AS AN ITEM IN 'LETTERHOLDER' ARRAY
+        function assignment() {
+            for (i = 0; i < currentName.length; i++) {
+                letterHolder.push(currentName.charAt(i));
+            }
+        };
+        //Check or Match userInput or keypress to items in letterHolder array
+        function checking() {
+            var lettercheck = event.key;
+            var rightwrong = letterHolder.includes(lettercheck);
+
+            if (alreadySelected.includes(lettercheck) === false) {
+                console.log("rightwrong:" + rightwrong)
+                for (var i = 0; i < currentName.length; i++) {
+                    if (lettercheck == currentName.charAt(i)) {
+                        console.log("you got one!");
+                        answerCheck.push(i);
+                        console.log(answerCheck);
+                        // document.getElementById("letter" + i).classList.remove('bg-dark')
+                        var correctDiv = document.getElementById("letter" + i);
+                        correctDiv.style.visibility = "visible";
+                        document.getElementById("letter" + i).className = "d-block text-danger bg-light"
+                        currentScore++;
+                        console.log("currentScore: " + currentScore);
+                        console.log("Name Length: " + (currentName.length - 1));
+                        if (currentScore === (currentName.length - 1)) {
+                            alert("You Win");
+                            document.getElementById("media").setAttribute("style", "-webkit-filter:blur(0px)");
+                            wins++;
+                            document.getElementById("video").src = "https://www.youtube.com/embed/1-IgxSn21jU?autoplay=1";
+                            document.getElementById("wins-text").textContent = wins;
                         }
                     }
-                    if (rightwrong === false) {
-                            var logLetter = (lettercheck);
-                            var loseDiv = document.createElement("div");
-                            incorrectLetters.push(logLetter);
-                            usedletters.appendChild(loseDiv);
-                            document.getElementById("usedletters").className = "text-important bg-blue";
-                            loseDiv.textContent = lettercheck;                        
-                            document.getElementById("media").setAttribute("style","-webkit-filter:blur(" + (hangman * 10 - 10) + "px)");
-                            hangman--;
-                                document.getElementById("guesses-left").textContent = "Guesses Left: " + hangman;
-                            if ( hangman <= 0) {
-                                alert("You Lose!")
-                            }
+                }
+                if (rightwrong === false) {
+                    var logLetter = (lettercheck);
+                    var loseDiv = document.createElement("div");
+                    incorrectLetters.push(logLetter);
+                    usedletters.appendChild(loseDiv);
+                    document.getElementById("usedletters").className = "text-important bg-blue";
+                    loseDiv.textContent = lettercheck;
+                    document.getElementById("media").setAttribute("style", "-webkit-filter:blur(" + (hangman * 10 - 10) + "px)");
+
+                    hangman--;
+                    document.getElementById("guesses-left").textContent = hangman;
+                    if (hangman <= 0) {
+                        alert("You Lose!")
                     }
-                } else {
-                    alert("You've already selected that letter");
-                    }        
-            };
-            // function repeatLetters () {
-            //     for (i = 0; i < currentName.length; i++) {
-            //         if (lettercheck = )            }
-            //compare the numbers in the answer array with the position of the numbers in the letterholder array
-            function showLetters() {
-                for (i = 0; i < currentName.length; i++) {
-                    var newDiv = document.createElement("div");
-                    answer.appendChild(newDiv);
-                    // document.getElementById("answer").className = "bg-dark";
-                    if (currentName.charAt(i) === " ") {
+                }
+            } else {
+                alert("You've already selected that letter");
+            }
+        };
+        // function repeatLetters () {
+        //     for (i = 0; i < currentName.length; i++) {
+        //         if (lettercheck = )            }
+        //compare the numbers in the answer array with the position of the numbers in the letterholder array
+        function showLetters() {
+            for (i = 0; i < currentName.length; i++) {
+                var newDiv = document.createElement("div");
+                answer.appendChild(newDiv);
+                // document.getElementById("answer").className = "bg-dark";
+                if (currentName.charAt(i) === " ") {
                     newDiv.textContent = "_";
-                    } else {
+                } else {
                     newDiv.textContent = currentName.charAt(i);
-                    }
-                    newDiv.id = "letter" + i;
-                    newDiv.style.visibility = "hidden";
                 }
-            };
-            function letterLog() {
-                    
-            };
-            function scorePoint() {
-                if (document.getElementById("letter" + i).textContent = "bg-dark") {
-                    alert ("You Win");
-                }
-            };
-            function reset() {
-                currentName = hangmanNames[Math.floor(Math.random() * hangmanNames.length)];
-                document.getElementById("media").src = "assets/images/" + currentName + ".jpg";
-                document.getElementById("media").setAttribute("style","-webkit-filter:blur(" + 70 + "px)");
-                letterHolder = [];
-                answerCheck = [];
-                alreadySelected = [];
-                currentScore = 0;
-                incorrectLetters = [];
-                rightwrong = Boolean;
-                hangman = 7;
-                newDiv = document.getElementById("answer");
-                while (newDiv.hasChildNodes()) {
-                    newDiv.removeChild(newDiv.firstChild);
-                }
-                loseDiv = document.getElementById("usedletters");
-                loseDiv.parentNode.removeChild(loseDiv);
-                assignment();            
-                showLetters();
-            };
+                newDiv.id = "letter" + i;
+                newDiv.style.visibility = "hidden";
+            }
+        };
+        function letterLog() {
+
+        };
+        function scorePoint() {
+            if (document.getElementById("letter" + i).textContent = "bg-dark") {
+                alert("You Win");
+            }
+        };
+        function reset() {
+            currentName = hangmanNames[Math.floor(Math.random() * hangmanNames.length)];
+            document.getElementById("media").src = "assets/images/" + currentName + ".jpg";
+            document.getElementById("media").setAttribute("style", "-webkit-filter:blur(70px)");
+            letterHolder = [];
+            answerCheck = [];
+            alreadySelected = [];
+            currentScore = 0;
+            incorrectLetters = [];
+            rightwrong = Boolean;
+            hangman = 7;
+            newDiv = document.getElementById("answer");
+            while (newDiv.hasChildNodes()) {
+                newDiv.removeChild(newDiv.firstChild);
+            }
+            loseDiv = document.getElementById("usedletters");
+            loseDiv.parentNode.removeChild(loseDiv);
+            assignment();
+            showLetters();
+        };
 
             //Display used letters already used 
             // keep track of letters used 
             //[]
-            
-            
-            
-            
 
-                
-            
+
+
+
+
+
+
 
             // document.onkeyup = function(event) {
             //     userInput.textContent = event.key;
@@ -186,12 +217,12 @@
             //     console.log(event.key);
             //     console.log(n);
             //     check(n);
-        
+
             //---------------------------------------------------
         //currentName.forEach.charAt(function (element);
-            
+
             // var isItThere = letterHolder.includes(event.key);
- 
+
         //     if ( isItThere = true) {
         //         var index = letterHolder.indexof(n);
         //         console.log(index)
@@ -201,19 +232,20 @@
         //         if ( n = letterHolder.charAt(i)) {
         //                 alert(currentName.charAt(i));
         //         for (i = 0; i < currentName.length; i++) {
-                    
+
         //             }
         //         }
         //     });
-           
-                
-                     
-                
-                
+
+
+
+
+
         //         console.log(currentName.charAt(i));
-                            
+
         //    }
-            
-        </script>
-    </body>
+
+    </script>
+</body>
+
 </html>
