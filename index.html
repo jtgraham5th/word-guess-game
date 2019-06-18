@@ -19,53 +19,73 @@
             -webkit-filter: blur(70px);
             filter: blur(70px);
         }
+        .border-3 {
+        border-width:3px !important;
+        }
+        .border-5 {
+        border-width:5px !important;
+        }
+        .border-4 {
+        border-width:4px !important;
+        }
     </style>
 </head>
+<!--QUESTIONS:
+    1. Is there an easier way to loop videos
+    3. Capital Letters for user inputs-->
 
-<body class="bg-dark text-light">
+<body class="text-light" style = "background-color:black">
     <div class= "jumbotron text-dark">
         <h1>Black History Word Guess</h1>
         <p>Test your knowledge of Black History, Input the correct letters. Input the wrong answer and the picture will
             become clearer to give you a hint. Can you figure out all 10? Good Luck!
         </p>
     </div>
-    <div class= "container">
-        <div class = "row d-flex align-items-center h-100">
-            <div class = "col-sm border h-100">
+    <div class= "container mb-2 bg-dark" style = "border:10px solid red">
+        <div class = "row d-flex align-items-center" style="height:100px; border:2px solid black; background-color: black">
+            <div class = "d-flex flex-column col-sm h-100 align-items-center justify-content-center" style = "border:3px solid red">
                 <h3>Wins:</h3>
-                <p id="wins-text"></p>
+                <p id="wins-text">0</p>
             </div>
-            <div class = "col-sm border h-100">
+            <div class = "d-flex flex-column col-sm h-100 align-items-center justify-content-center" style = "border:3px solid red">
                 <h3>Guesses Left:</h3>
-                <p id="guesses-left"></p>
+                <p id="guesses-left">7</p>
             </div>
-            <div class = "col-sm border h-100">
-                <h3>You just typed <span id="user-input"><strong>...Nothing.</strong></span></h3>
+            <div class = "d-flex flex-column col-sm h-100 align-items-center justify-content-center" style = "border:3px solid red">
+                <h3>You just typed <p id="user-input"><strong>...Nothing.</strong></p></h3>
             </div>
-            <div class = "col-sm border h-100">
-                <button onclick="reset()">Start a New Game</button>
+            <div class = "d-flex col-sm h-100 align-items-center justify-content-center" style = "border:3px solid red">
+                <button onclick="reset()" class="btn btn-danger">Start a New Game</button>
             </div>
         </div>
-        <div class = "row border">
-            <div id="answer" style="font-size:36px; display:inline-flex; float: left;" class = "mx-auto"></div>
+        <div class = "d-flex row" >
+                <div class = "d-flex mx-auto bg-success px-2 col-sm align-items-center justify-content-center" style = "border:2px solid black; color: black">
+                    <h3>Who is it?</h3>
+                </div>
+                <div class = "d-flex mx-auto bg-warning px-2 col-sm align-items-center justify-content-center" style = "border:2px solid black; color: black">
+                    <h3>Incorrect Letters:</h3>
+                </div>
         </div>
-        <div class = "row">
-            <div class = "col-sm border mx-auto" style = "height:400px; width:500px">
-                <img src="" id="media" style= "width:100%"/>
+        <div class = "d-flex row bg-light" >
+            <div id="answer" class = "mx-auto px-2 col-sm justify-content-center" style="font-size:36px; display:inline-flex; float: left; border:0px solid black" >
             </div>
-            <div class = "col-sm border mx-auto"  style = "height:400px; width:500px"">
+            <div id="usedletters" class = "mx-auto px-2 col-sm justify-content-center" style="font-size:36px; display:inline-flex; float: left; border:2px solid black">
+            </div>
+        </div>
+        <div class = "d-flex row align-items-center">
+            <div class = "d-flex bg-light col-sm mx-auto align-items-center justify-content-center" style = "height:400px; width:500px; border:0px solid black">
+                <img src="" id="media" width = "375px" height = "375px"/>
+            </div>
+            <div class = "d-flex col-sm mx-auto align-items-center justify-content-center"  style = "height:400px; width:500px; border:2px solid black; background-color: black">
                 <iframe src="" id="video" frameborder="0" width="400" height="400" allow="autoplay"></iframe>
             </div>
-        </div>
-        <div class = "row border">
-            <h2><p id="usedletters" style="display:inline-flex; float: left;"></p></h2>
         </div>
     </div>
 
     <script type="text/javascript">
 
         var userInput = document.getElementById("user-input");
-        var hangmanNames = ["oprah winfrey", "rosa parks", "muhammad ali", "barack obama", "jackie robinson", "martin luther king Jr", "harriet tubman", "maya angelou", "mae c jemison"];
+        var hangmanNames = ["oprah winfrey", "rosa parks", "muhammad ali", "barack obama", "jackie robinson", "martin luther king Jr", "harriet tubman", "maya angelou", "mae c jemison", "langston hughes"];
         var currentName = hangmanNames[Math.floor(Math.random() * hangmanNames.length)];
         console.log(currentName);
         var letterHolder = [];
@@ -121,15 +141,15 @@
                         // document.getElementById("letter" + i).classList.remove('bg-dark')
                         var correctDiv = document.getElementById("letter" + i);
                         correctDiv.style.visibility = "visible";
-                        document.getElementById("letter" + i).className = "d-block text-danger bg-light"
+                        document.getElementById("letter" + i).className = "px-1 d-block text-danger bg-light"
                         currentScore++;
                         console.log("currentScore: " + currentScore);
-                        console.log("Name Length: " + (currentName.length - 1));
-                        if (currentScore === (currentName.length - 1)) {
-                            alert("You Win");
+                        console.log("Name Length: " + currentName.length);
+                        if (currentScore === (currentName.length)) {
+                            alert("You Win!!");
                             document.getElementById("media").setAttribute("style", "-webkit-filter:blur(0px)");
                             wins++;
-                            document.getElementById("video").src = "https://www.youtube.com/embed/1-IgxSn21jU?autoplay=1";
+                            videoSelection();
                             document.getElementById("wins-text").textContent = wins;
                         }
                     }
@@ -137,9 +157,10 @@
                 if (rightwrong === false) {
                     var logLetter = (lettercheck);
                     var loseDiv = document.createElement("div");
-                    incorrectLetters.push(logLetter);
                     usedletters.appendChild(loseDiv);
-                    document.getElementById("usedletters").className = "text-important bg-blue";
+                    loseDiv.id = "incorrect-" + lettercheck;
+                    incorrectLetters.push(logLetter);
+                    document.getElementById("incorrect-" + lettercheck).className = "px-1 bg-danger";
                     loseDiv.textContent = lettercheck;
                     document.getElementById("media").setAttribute("style", "-webkit-filter:blur(" + (hangman * 10 - 10) + "px)");
 
@@ -164,6 +185,7 @@
                 // document.getElementById("answer").className = "bg-dark";
                 if (currentName.charAt(i) === " ") {
                     newDiv.textContent = "_";
+                    currentScore++;
                 } else {
                     newDiv.textContent = currentName.charAt(i);
                 }
@@ -171,18 +193,38 @@
                 newDiv.style.visibility = "hidden";
             }
         };
-        function letterLog() {
+        // var hangmanNames = ["oprah winfrey", "rosa parks", "muhammad ali", "barack obama", "jackie robinson", "martin luther king Jr", "harriet tubman", "maya angelou", "mae c jemison"];
+
+        function videoSelection() {
+            if (currentName === "oprah winfrey") {
+                document.getElementById("video").src = "https://www.youtube.com/embed/HChdxsXUVs8?autoplay=1";
+            } else if (currentName === "rosa parks") {
+                document.getElementById("video").src = "https://www.youtube.com/embed/v8A9gvb5Fh0?autoplay=1";
+            } else if (currentName === "muhammad ali") {
+                document.getElementById("video").src = "https://www.youtube.com/embed/jIxbhA4su0g?autoplay=1";
+            } else if (currentName === "barack obama") {
+                document.getElementById("video").src = "https://www.youtube.com/embed/1-IgxSn21jU?autoplay=1";
+            } else if (currentName === "jackie robinson") {
+                document.getElementById("video").src = "https://www.youtube.com/embed/CX3tv9uKj1I?autoplay=1";
+            } else if (currentName === "martin luther king jr") {
+                document.getElementById("video").src = "https://www.youtube.com/embed/3ank52Zi_S0?autoplay=1";
+            } else if (currentName === "harriet tubman") {
+                document.getElementById("video").src = "https://www.youtube.com/embed/XmsNGrkbHm4?autoplay=1";
+            } else if (currentName === "maya angelou") {
+                document.getElementById("video").src = "https://www.youtube.com/embed/LyHqafC740Q?autoplay=1";
+            } else if (currentName === "mae c jemison") {
+                document.getElementById("video").src = "https://www.youtube.com/embed/EgOaIKshbIU?autoplay=1";
+            } else if (currentName === "langston hughes") {
+                document.getElementById("video").src = "https://www.youtube.com/embed/inP76rkYUso?autoplay=1";
+            } 
 
         };
-        function scorePoint() {
-            if (document.getElementById("letter" + i).textContent = "bg-dark") {
-                alert("You Win");
-            }
-        };
+        
         function reset() {
             currentName = hangmanNames[Math.floor(Math.random() * hangmanNames.length)];
             document.getElementById("media").src = "assets/images/" + currentName + ".jpg";
             document.getElementById("media").setAttribute("style", "-webkit-filter:blur(70px)");
+            document.getElementById("video").src = "";
             letterHolder = [];
             answerCheck = [];
             alreadySelected = [];
@@ -190,12 +232,15 @@
             incorrectLetters = [];
             rightwrong = Boolean;
             hangman = 7;
+            document.getElementById("guesses-left").textContent = hangman;
             newDiv = document.getElementById("answer");
             while (newDiv.hasChildNodes()) {
                 newDiv.removeChild(newDiv.firstChild);
             }
             loseDiv = document.getElementById("usedletters");
-            loseDiv.parentNode.removeChild(loseDiv);
+            while (loseDiv.hasChildNodes()) {
+                loseDiv.removeChild(loseDiv.firstChild);
+            }
             assignment();
             showLetters();
         };
