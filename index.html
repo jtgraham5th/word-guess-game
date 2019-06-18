@@ -22,7 +22,7 @@
             <hr>
             <H1><div id="answer" style="display:inline-flex; float: left;"></div></H1>
             <hr>
-            <iframe src="https://s.hdnux.com/photos/55/72/53/12036806/7/920x920.jpg" id="media" frameborder ="0" width="500" height="400" allow="autoplay"></iframe>
+            <iframe src="" id="media" frameborder ="0" width="500" height="400" allow="autoplay"></iframe>
             <p id="guesses-left"></p>
             <hr>
             <H2><p id="usedletters" style="display:inline-flex; float: left;"></p></H2>
@@ -35,7 +35,7 @@
         <script type="text/javascript">
         
          var userInput = document.getElementById("user-input");
-         var hangmanNames = ["nelson mandela","rosa parks", "muhammad ali", "toni Morrison", "barack obama"];
+         var hangmanNames = ["oprah winfrey","rosa parks", "muhammad ali", "barack obama", "jackie robinson", "martin luther king Jr", "harriet tubman", "maya angelou", "mae c jemison"];
          var currentName = hangmanNames[Math.floor(Math.random() * hangmanNames.length)];
          console.log(currentName);
          var letterHolder = [];
@@ -46,6 +46,7 @@
          var rightwrong = Boolean;
          var hangman = 7;
          var wins = 0;
+         document.getElementById("media").src = "assets/images/" + currentName + ".jpg";
 
             document.onkeyup = function(event) {
                 userInput.textContent = event.key;
@@ -96,6 +97,7 @@
                             console.log ("Name Length: " + (currentName.length - 1));
                             if (currentScore === (currentName.length - 1)) {
                                 alert ("You Win");
+                                document.getElementById("media").setAttribute("style","-webkit-filter:blur(" + 0 + "px)");
                                 wins++;
                                 document.getElementById("media").src = "https://www.youtube.com/embed/1-IgxSn21jU?autoplay=1";
                                 document.getElementById("wins-text").textContent = "Wins: " + wins;
@@ -109,9 +111,7 @@
                             usedletters.appendChild(loseDiv);
                             document.getElementById("usedletters").className = "text-important bg-blue";
                             loseDiv.textContent = lettercheck;                        
-                            
                             document.getElementById("media").setAttribute("style","-webkit-filter:blur(" + (hangman * 10 - 10) + "px)");
-                            // document.getElementById("media").src = "assets/images/hm" + hangman + ".jpg";
                             hangman--;
                                 document.getElementById("guesses-left").textContent = "Guesses Left: " + hangman;
                             if ( hangman <= 0) {
@@ -150,6 +150,8 @@
             };
             function reset() {
                 currentName = hangmanNames[Math.floor(Math.random() * hangmanNames.length)];
+                document.getElementById("media").src = "assets/images/" + currentName + ".jpg";
+                document.getElementById("media").setAttribute("style","-webkit-filter:blur(" + 70 + "px)");
                 letterHolder = [];
                 answerCheck = [];
                 alreadySelected = [];
@@ -161,10 +163,12 @@
                 while (newDiv.hasChildNodes()) {
                     newDiv.removeChild(newDiv.firstChild);
                 }
-                document.getElementById("media").src = "";
+                loseDiv = document.getElementById("usedletters");
+                loseDiv.parentNode.removeChild(loseDiv);
                 assignment();            
                 showLetters();
             };
+
             //Display used letters already used 
             // keep track of letters used 
             //[]
