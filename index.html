@@ -10,20 +10,27 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <style>
+            #media {
+                -webkit-filter: blur(70px); 
+                filter: blur(70px);
+            } 
+        </style>
     </head>
     <body>
             <h2 >You just typed <span id="user-input"><strong>...Nothing.</strong></span></h2>
             <hr>
             <H1><div id="answer" style="display:inline-flex; float: left;"></div></H1>
             <hr>
-            <iframe src="" id="media" frameborder ="0" width="500" height="400" allow="autoplay"></iframe>
+            <iframe src="https://s.hdnux.com/photos/55/72/53/12036806/7/920x920.jpg" id="media" frameborder ="0" width="500" height="400" allow="autoplay"></iframe>
+            <p id="guesses-left"></p>
             <hr>
             <H2><p id="usedletters" style="display:inline-flex; float: left;"></p></H2>
             <p id="show-letters"></p>
             <button onclick="reset()">Start a New Game</button>
-            <!-- <p id="wins-text"></p>
-            <p id="losses-text"></p>
-            <p id="ties-text"></p> -->
+            <p id="wins-text"></p>
+            
+            <p id="ties-text"></p>
         
         <script type="text/javascript">
         
@@ -37,7 +44,8 @@
          var currentScore = 0;
          var incorrectLetters = [];
          var rightwrong = Boolean;
-         var hangman = 0;
+         var hangman = 7;
+         var wins = 0;
 
             document.onkeyup = function(event) {
                 userInput.textContent = event.key;
@@ -49,8 +57,8 @@
                 alreadySelected.push(event.key);
             } 
         
-            assignment();            
-            showLetters();
+        assignment();            
+        showLetters();
 
             //Create Variable that stores Names to be used in Hangman
             
@@ -64,8 +72,7 @@
             //ASSIGNS EACH LETTER IN 'CURRENTNAME' AS AN ITEM IN 'LETTERHOLDER' ARRAY
             function assignment() {
                 for (i = 0; i < currentName.length; i++) {
-                    letterHolder.push(currentName.charAt(i));
-                    
+                    letterHolder.push(currentName.charAt(i));  
                 }
             };
             //Check or Match userInput or keypress to items in letterHolder array
@@ -77,7 +84,7 @@
                     console.log ("rightwrong:" + rightwrong)
                     for (var i = 0; i < currentName.length; i++) {
                         if (lettercheck == currentName.charAt(i)) {
-                            console.log ("you got one!")
+                            console.log ("you got one!");
                             answerCheck.push(i);
                             console.log (answerCheck);
                             // document.getElementById("letter" + i).classList.remove('bg-dark')
@@ -89,8 +96,9 @@
                             console.log ("Name Length: " + (currentName.length - 1));
                             if (currentScore === (currentName.length - 1)) {
                                 alert ("You Win");
+                                wins++;
                                 document.getElementById("media").src = "https://www.youtube.com/embed/1-IgxSn21jU?autoplay=1";
-                                // document.getElementById("media").setAttribute = ("allow", "autoplay");
+                                document.getElementById("wins-text").textContent = "Wins: " + wins;
                             }
                         }
                     }
@@ -101,21 +109,19 @@
                             usedletters.appendChild(loseDiv);
                             document.getElementById("usedletters").className = "text-important bg-blue";
                             loseDiv.textContent = lettercheck;                        
-                            hangman++;
-                            document.getElementById("media").src = "assets/images/hm" + hangman + ".jpg"; 
-                            if ( hangman >= 7) {
+                            
+                            document.getElementById("media").setAttribute("style","-webkit-filter:blur(" + (hangman * 10 - 10) + "px)");
+                            // document.getElementById("media").src = "assets/images/hm" + hangman + ".jpg";
+                            hangman--;
+                                document.getElementById("guesses-left").textContent = "Guesses Left: " + hangman;
+                            if ( hangman <= 0) {
                                 alert("You Lose!")
                             }
                     }
                 } else {
-                    alert("Youv'e already selected that letter");
-                }    
-                    
-                    
-                    
-                    
-                    
-                };
+                    alert("You've already selected that letter");
+                    }        
+            };
             // function repeatLetters () {
             //     for (i = 0; i < currentName.length; i++) {
             //         if (lettercheck = )            }
@@ -150,7 +156,7 @@
                 currentScore = 0;
                 incorrectLetters = [];
                 rightwrong = Boolean;
-                hangman = 0;
+                hangman = 7;
                 newDiv = document.getElementById("answer");
                 while (newDiv.hasChildNodes()) {
                     newDiv.removeChild(newDiv.firstChild);
